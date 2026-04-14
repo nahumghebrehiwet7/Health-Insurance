@@ -1,0 +1,9 @@
+
+# Average Charge by children count
+select children,
+count(*),
+avg(charges),
+stddev(charges)
+from insurance
+group by children
+order by avg(charges) desc;
