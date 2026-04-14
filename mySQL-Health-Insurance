@@ -1,3 +1,13 @@
+# The coding on this page shows all the mySQL codes used for the health insurance project
+
+# Average Charge by Sex
+select sex,
+count(*),
+avg(charges),
+stddev(charges)
+from insurance
+group by sex 
+order by avg(charges) desc; 
 
 
 # Average charge by age
