@@ -43,3 +43,38 @@ from insurance
 where children < 4
 group by children
 order by avg(charges) desc;
+
+# Average Charge by BMI 
+select
+case
+when bmi < 18.5 then "Underweight"
+when bmi < 24.9 then "Healthy Weight" 
+when bmi < 29.9 then "Overweight"
+when bmi < 34.9 then "Class 1 Obesity"
+when bmi < 39.9 then "Class 2 Obesity"
+else "Class 3 Obesity"
+end as bmi_Range,
+avg(charges),
+count(*),
+stddev(charges)
+from insurance
+group by bmi_Range
+order by avg(charges) desc;
+
+# Average Charge by BMI (excluding underweight and class 3 obesity)
+select
+case
+when bmi < 18.5 then "Underweight"
+when bmi < 24.9 then "Healthy Weight" 
+when bmi < 29.9 then "Overweight"
+when bmi < 34.9 then "Class 1 Obesity"
+when bmi < 39.9 then "Class 2 Obesity"
+else "Class 3 Obesity"
+end as bmi_Range,
+avg(charges),
+count(*),
+stddev(charges)
+from insurance
+where bmi between 18.5 and 39.89
+group by bmi_Range
+order by avg(charges) desc;
