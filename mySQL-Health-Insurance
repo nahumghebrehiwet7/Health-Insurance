@@ -33,3 +33,13 @@ stddev(charges)
 from insurance
 group by children
 order by avg(charges) desc;
+
+# Average Charge by children count (Removing patients with more than 3 children) 
+select children,
+count(*),
+avg(charges),
+stddev(charges)
+from insurance
+where children < 4
+group by children
+order by avg(charges) desc;
