@@ -78,3 +78,12 @@ from insurance
 where bmi between 18.5 and 39.89
 group by bmi_Range
 order by avg(charges) desc;
+
+# Average charge by region
+select region,
+count(*),
+avg(charges),
+stddev(charges)
+from insurance
+group by region
+order by avg(charges) desc;
