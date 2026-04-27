@@ -11,3 +11,29 @@ results <- data.frame(
   )
 )
 results
+
+# F-Test age
+dataset$age_group <- cut(dataset$age, 
+                         breaks = c(0, 30, 40, 50, 60, 100),
+                         labels = c("<30", "30-39", "40-49", "50-59", "60+"),
+                         right = FALSE)
+anova_result <- aov(charges ~ age_group, data = dataset)
+anova_summary <- summary(anova_result)
+age_means <- round(tapply(dataset$charges, dataset$age_group, mean), 0)
+age_counts <- tapply(dataset$charges, dataset$age_group, length)
+age_anova_results <- data.frame(
+  Age_Group = c("<30", "30-39", "40-49", "50-59", "60+"),
+  Mean_Charge = age_means,
+  Count = age_counts
+)
+age_anova_results$Mean_Charge <- paste0("$", format(age_anova_results$Mean_Charge, big.mark = ","))
+p_value <- anova_summary[[1]][["Pr(>F)"]][1]
+age_anova_summary <- data.frame(
+  Test = "ANOVA (All Age Groups)",
+  F_Statistic = round(anova_summary[[1]][["F value"]][1], 2),
+  P_Value = format(p_value, scientific = TRUE, digits = 3),
+  Significant = ifelse(p_value < 0.05, "Yes - Age significantly affects charges", "No")
+)
+
+# Return both tables as a list
+list(Age_Group_Means = age_anova_results, ANOVA_Summary = age_anova_summary)
