@@ -1,0 +1,13 @@
+#t-test smoker
+t_test_result <- t.test(charges ~ smoker, data = dataset)
+results <- data.frame(
+  Statistic = c("T-Statistic", "P-Value", "Mean (Non-Smoker)", "Mean (Smoker)", "Difference"),
+  Value = c(
+    round(t_test_result$statistic, 2),
+    format(t_test_result$p.value, scientific = TRUE, digits = 3),
+    round(t_test_result$estimate[1], 0),
+    round(t_test_result$estimate[2], 0),
+    round(t_test_result$estimate[2] - t_test_result$estimate[1], 0)
+  )
+)
+results
