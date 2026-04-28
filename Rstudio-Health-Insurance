@@ -12,7 +12,7 @@ results <- data.frame(
 )
 results
 
-# F-Test age
+#### F-Test age ####
 dataset$age_group <- cut(dataset$age, 
                          breaks = c(0, 30, 40, 50, 60, 100),
                          labels = c("<30", "30-39", "40-49", "50-59", "60+"),
@@ -35,5 +35,36 @@ age_anova_summary <- data.frame(
   Significant = ifelse(p_value < 0.05, "Yes - Age significantly affects charges", "No")
 )
 
+#### F-Test Number of Childre #### 
+dataset$children_group <- as.factor(dataset$children)
+
+# ANOVA
+anova_children <- aov(charges ~ children_group, data = dataset)
+anova_summary <- summary(anova_children)
+
+# means by number of children
+children_means <- tapply(dataset$charges, dataset$children, mean)
+children_counts <- tapply(dataset$charges, dataset$children, length)
+
+# Create results table
+children_results <- data.frame(
+  Children_Count = names(children_means),
+  Avg_Charge = paste0("$", format(round(children_means, 0), big.mark = ",")),
+  Patient_Count = children_counts
+)
+
+# Get p-value
+p_value <- anova_summary[[1]][["Pr(>F)"]][1]
+
+# Add statistical summary
+stat_summary <- data.frame(
+  Test = "ANOVA: Charges by Number of Children",
+  F_Statistic = round(anova_summary[[1]][["F value"]][1], 2),
+  P_Value = format(p_value, scientific = TRUE, digits = 3),
+  Significant = ifelse(p_value < 0.05, "YES - Children affect charges", "NO - Children do NOT affect charges")
+)
+
+# Return both tables
+list(Children_Summary = children_results, ANOVA_Results = stat_summary)
 # Return both tables as a list
 list(Age_Group_Means = age_anova_results, ANOVA_Summary = age_anova_summary)
