@@ -1,5 +1,5 @@
 # Health-Insurance
-Simple python and SQL project analyzing how different characteristics can influence healthcare charges
+Simple python, rstudio and SQL project analyzing how different characteristics can influence healthcare charges
 
 # Python is used to check any issues regarding the data. 
 import pandas as pd
